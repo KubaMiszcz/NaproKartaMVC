@@ -1,0 +1,133 @@
+﻿@*@model  NaproKarta.ViewModels.AuxiliaryVMs.ObservationVM
+
+@{
+   ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table style="width:100%; text-align:center" border="1">
+    <tr>
+        @foreach (var item in Model.Markers)
+        {
+        <td>
+            <button type="button" id="@item.Name" name="@item.Name"
+                    class="btn btn-default" style="height:50%; width:auto"
+                    val="@item.Name">
+                <img src="@item.Address" alt="@item.Name" style="width:100px; height:auto" />
+            </button>
+        </td>
+        }
+    </tr>
+</table>
+<table style="width:100%; text-align:left" border="1">
+    <tr>
+        <td>
+            @foreach (var item in Model.LetterLetterSymbolsA)
+            {
+            <div class="radio">
+                <label><input type="radio" name="@Html.DisplayNameFor(Model => Model.LetterLetterSymbolsA)">@item.LetterSymbol</label>
+            </div>
+            }
+            </td>
+        <td>
+            @foreach (var item in Model.LetterLetterSymbolsB)
+            {
+            <div class="radio">
+                <label><input type="radio" name="@Html.DisplayNameFor(Model => Model.LetterLetterSymbolsB)">@item.LetterSymbol</label>
+            </div>
+            }
+            <div class="checkbox">
+                <label><input type="checkbox" val="">@Html.DisplayNameFor(Model => Model.LetterIsB)</label>
+            </div>
+        </td>
+        <td>
+            @foreach (var item in Model.CipherAndCipherCD)
+            {
+            <div class="radio">
+                <label><input type="radio" name="@Html.DisplayNameFor(Model => Model.CipherAndCipherCD)">@item.LetterSymbol</label>
+            </div>
+            }
+        </td>
+        <td>
+            @foreach (var item in Model.CipherAndCipherCDCD)
+            {
+            <div class="radio">
+                <label><input type="radio" name="@Html.DisplayNameFor(Model => Model.CipherAndCipherCDCD)">@item.LetterSymbol</label>
+            </div>
+            }
+        </td>
+        <td>
+            @foreach (var item in Model.NumTimes)
+            {
+            <div class="radio">
+                <label><input type="radio" name="@Html.DisplayNameFor(Model => Model.NumTimes)">@item.LetterSymbol</label>
+            </div>
+            }
+        </td>
+        @*<td>
+                @foreach (var item in Model.Observation.Comments)
+                {
+                <div class="radio">
+                    <label><input type="radio" name="@item.LetterSymbol">@item.LetterSymbol</label>
+                </div>
+                }
+            </td>*@@*
+    </tr>
+</table>
+<table border="1" style="width:100%; text-align:center; vertical-align:central; padding:1%">
+    @for (int i = 0; i < 3; i++)
+    {
+    <tr style="height:20%">
+        <td style="width:5%; text-align:center; vertical-align:central; padding:1%">
+            <div class="checkbox">
+                @*<button type="button" class="btn btn-danger "><h2>!!!</h2></button><br />*@
+                @*<h2>!!!</h2><br />
+                <label><input type="checkbox" val=""></label>
+            </div>
+        </td>
+        <td><h1> B</h1>
+        </td>
+        <td style="width:90%; text-align:center; vertical-align:central; padding:1%">
+            <div class="form-group">
+                <label for="comment"></label>
+                <textarea class="form-control" rows="3" id="comment"></textarea>
+            </div>
+        </td>
+    </tr>
+    }
+</table>*@
+
+
+@*<table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PeakNum)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PeakNum)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+            </td>
+        </tr>
+        }
+
+    </table>*@

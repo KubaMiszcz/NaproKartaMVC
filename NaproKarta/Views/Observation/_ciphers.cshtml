@@ -1,0 +1,27 @@
+﻿@model NaproKarta.ViewModels.ObservationEditVM
+
+<div class="groupBox">
+    <table class="propertiesHeight">
+        <tr>
+            @foreach (var col in Model.CiphersTwoColumns)
+            {
+            <td style="padding: 5px; vertical-align: top;">
+                <table>
+                    @foreach (var item in col)
+                    {
+                    <tr>
+                        <td style="text-align: left;  padding-right: 15px">
+                            <label style="padding: 1px; margin: 1px">
+                                @Html.RadioButtonFor(x => x.Observation.Cipher.Value, item)
+                                @item
+                            </label>
+                        </td>
+                    </tr>
+                    }
+                </table>
+            </td>
+            }
+        </tr>
+    </table>
+
+</div>

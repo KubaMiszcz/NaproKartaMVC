@@ -1,0 +1,83 @@
+﻿@using System.Web.UI.HtmlControls
+@using NaproKarta.ViewModels.AuxiliaryVMs
+@model NaproKarta.ViewModels.ChartVM
+
+@*@{
+   ViewBag.Title = "Users ChartsVMs";
+}*@
+<br />
+<div class="container">
+    <div class="panel panel-primary">
+        <div class="panel-body panel-primary" style="padding: 1px;">
+            <table>
+                <tr>
+                    <td style="padding-left: 10px">
+                        <h3>Hello @Model.User.UserName</h3>
+                    </td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <td style="padding-left: 20px">
+                        <h3>Aktualna Karta: </h3>
+                    </td>
+                    <td style="padding-left: 20px; ">
+                        <div class="dropdown ">
+                            @Html.DropDownListFor(model => model.Chart.ID,
+                          Model.UserChartNames,
+                          new
+                          {
+                              @class = "btn btn-primary btn-lg dropdown-toggle",
+                              @onchange = "ChangeSelectedChart(" + @Model.User.ID + ",this);"
+                          })
+                        </div>
+                    </td>
+                    <td style="padding-left: 20px">
+                        @Html.ActionLink("Edytuj właściwości tej karty", "EditChart", new { chartId = @Model.Chart.ID }, new { @class = "btn btn-primary btn-lg" })
+                    </td>
+                    <td style="padding-left: 20px">
+                        @Html.ActionLink("Utwórz kartę", "CreateChart", new { id = @Model.User.ID, prevChartId = @Model.Chart.ID }, new { @class = "btn btn-primary btn-lg" })
+                    </td>
+                    <td style="padding-left: 20px">
+                        @Html.ActionLink("Usuń tą kartę", "DeleteChart", new { chartId = @Model.Chart.ID }, new { @class = "btn btn-danger btn-lg" })
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="" style="overflow-x:visible;">
+        <table class="Chart" style="overflow-x:visible;">
+            <tr>
+                @{
+                   foreach (string columnHeader in Model.ColumnHeaders)
+                   {
+                    <th class="chartCell">@columnHeader</th>
+                   }
+                }
+            </tr>
+            @{
+               foreach (CycleVM cycleVm in Model.CyclesVM)
+               {
+                <tr class="chartRow">
+                    @{
+                        <td>
+                            @Html.TextAreaFor(c => cycleVm.Cycle.Note, new { @style = "height=100%;", @rows = "10", @cols = "80" })
+                        </td>
+                       foreach (ObservationCellVM cellVm in cycleVm.ObservationCellsVMList)
+                       {
+                        <td class="chartCell">@{ Html.RenderPartial("_observationCell", cellVm); }</td>
+                       }
+                    }
+                </tr>
+                       }
+            }
+        </table>
+    </div>
+
+
+    <div style="overflow-x:visible;">
+    </div>
+
+
+</div>

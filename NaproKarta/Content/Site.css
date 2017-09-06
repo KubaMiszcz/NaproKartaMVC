@@ -1,0 +1,95 @@
+﻿.debug {
+    /*display: ;*/
+}
+body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+/*chart styles*/
+.Chart {
+    border: 4px solid black;
+
+}
+.chartRow {
+    border: 4px solid black;
+    padding:0px;
+    /*border-spacing: 0px;*/
+    /*border-collapse: collapse;*/
+    margin: 0px;
+    vertical-align: central;
+    text-align: center;
+}
+
+.chartCell {
+    border: 2px solid black;
+    padding: 0px;
+    margin: 0px;
+    vertical-align:central;
+    text-align: center;
+    /*border-spacing: 0px;*/
+    /*border-collapse: collapse;*/
+}
+
+    .chartCellContent:hover {
+        background-color: #99e699
+    }
+
+.chartCellContent {
+    border: none;
+    vertical-align: central;
+    text-align: center;
+    padding: 1px;
+    width: 50px;
+    border-radius: 10px;
+}
+.date {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    background-color: burlywood;
+}
+/*end chart styles*/
+
+.groupBox {
+    /*table-layout: fixed;*/
+    border-radius: 10px;
+    border: 1px solid darkblue;
+    margin: 10px;
+    vertical-align: top;
+    text-align: center;
+    padding: 5px;
+    border-spacing: 0px;
+    /*border-collapse: collapse;*/
+}
+
+.propertiesHeight {
+    height: 175px;
+}
+
+
+
+/*td {
+    border: 1px dotted red;
+    border-radius: 15px;
+}*/
+

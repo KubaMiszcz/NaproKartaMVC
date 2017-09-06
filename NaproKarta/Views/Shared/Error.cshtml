@@ -1,0 +1,25 @@
+﻿@model NaproKarta.ViewModels.AuxiliaryVMs.ErrorProvider
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Error.</title>
+</head>
+<body>
+<br/>
+<div class="panel panel-danger">
+    <div class="panel-heading">
+        <h1>Error!</h1>
+    </div>
+    <div class="panel-body">
+        <h2>An error occurred while processing your request.</h2>
+        @{
+            foreach (string message in @Model.Messages)
+            {
+                <h2>@message</h2>
+            }
+        }
+    </div>
+</div>
+</body>
+</html>
