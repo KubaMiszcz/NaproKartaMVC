@@ -58,7 +58,7 @@ namespace NaproKarta.ViewModels
          PopulateFormLabels();
       }
 
-      public ObservationEditVM(NaproKartaDAL dbContext, int row, int col) : this()
+      public ObservationEditVM(int row, int col) : this()
       {
          //db = dbContext;
          Row = row;
@@ -95,14 +95,11 @@ namespace NaproKarta.ViewModels
          }
       }
 
-      public void UpdateObservation(Observation observationToUpdatee)
+      public void UpdateObservation()
       {
          Observation observationToUpdate = db.Observations.Include(o => o.Notes).SingleOrDefault(i => i.ID == Observation.ID);
-
          if (observationToUpdate is null) //observation doesnt exist
          {
-
-
             Cycle cycle = Chart?.Cycles?.SingleOrDefault(c => c.RowNumber == Row);
             if (cycle is null)//cycle doesnt eixst
             {
@@ -110,12 +107,14 @@ namespace NaproKarta.ViewModels
                cycle.RowNumber = Row;
                Chart.AddCycle(cycle);
                db.Cycles.Add(cycle);
+               db.SaveChanges();//xx
             }
             observationToUpdate=new Observation();
             cycle.AddObservation(observationToUpdate);
             db.Observations.Add(observationToUpdate);
+            db.SaveChanges();//xx
          }
-         db.SaveChanges();
+         //xx db.SaveChanges();
 
          //update fields
          observationToUpdate.ColNumber = Col;
@@ -132,6 +131,7 @@ namespace NaproKarta.ViewModels
          observationToUpdate.CommentVisit = Observation.CommentVisit;
          observationToUpdate.CommentMedicalTest = Observation.CommentMedicalTest;
          observationToUpdate.CommentLupucupu = Observation.CommentLupucupu;
+
          foreach (Note note in NotesVM)//todo: przeorb bo usuwanie notek kilku usuwa tylko jedna, potestuj kombinacje i zrob jako dwie tablice itp notek...
          {
             int i = NotesVM.IndexOf(note);
@@ -141,6 +141,7 @@ namespace NaproKarta.ViewModels
                {
                   observationToUpdate.AddNote(note); //if user wrote sth
                   db.Notes.Add(note);
+                  db.SaveChanges();//xx
                }
             }
             else //note exist
@@ -150,12 +151,16 @@ namespace NaproKarta.ViewModels
                {
                   observationToUpdate?.Notes?.Remove(noteToUpdate);
                   db.Notes.Remove(noteToUpdate);
+                  db.SaveChanges();//xx
                }
                else
                {
                   noteToUpdate.Content = note.Content.Trim(); //update note
                   db.Entry(noteToUpdate).State = EntityState.Modified;
+                  db.SaveChanges();//xx
                   db.Entry(observationToUpdate).State = EntityState.Modified;
+                  db.SaveChanges();//xx
+
                }
             }
          }

@@ -24,7 +24,7 @@
                 </button>
             </td>
             <td>
-                <h3>Edit Observation in:&nbsp;</h3>
+                <h3>ObservationEdit Observation in:&nbsp;</h3>
                 <h3 class="debug">@Model.Observation.ID</h3>
             </td>
             <td>
@@ -80,23 +80,23 @@
                 <tr>
                     <td style="vertical-align: top; ">
                         @*letters*@
-                        @{ Html.RenderPartial("_letters", Model); }
+                        @{ Html.RenderPartial("PartialObservationViews/letters", Model); }
                     </td>
                     <td>
                         @*ciphers*@
-                        @{ Html.RenderPartial("_ciphers", Model); }
+                        @{ Html.RenderPartial("PartialObservationViews/ciphers", Model); }
                     </td>
                     <td>
                         @*ciphersCD*@
-                        @{ Html.RenderPartial("_ciphersCD", Model); }
+                        @{ Html.RenderPartial("PartialObservationViews/ciphersCD", Model); }
                     </td>
                     <td>
                         @*Numtimes*@
-                        @{ Html.RenderPartial("_numTimes", Model); }
+                        @{ Html.RenderPartial("PartialObservationViews/numTimes", Model); }
                     </td>
                     <td>
                         @*Comments*@
-                        @{ Html.RenderPartial("_comments", Model); }
+                        @{ Html.RenderPartial("PartialObservationViews/comments", Model); }
                     </td>
                 </tr>
             </table>
@@ -141,7 +141,7 @@
                         <input type="submit" id="button" name="button" value="Cancel" class="btn btn-info btn-block" />
                     </td>
                     <td style="width: 25%;  ">
-                        <input type="submit" id="button" name="button" value="Save" class="btn btn-info btn-block" />
+                        <input type="submit" id="button" name="button" value="Save" class="btn btn-success btn-block" />
                     </td>
                     <td style="width: 25%;  ">
                         <input type="submit" id="button" name="button" value="Delete" class="btn btn-danger btn-block" />

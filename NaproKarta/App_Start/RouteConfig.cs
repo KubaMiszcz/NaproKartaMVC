@@ -16,8 +16,8 @@ namespace NaproKarta
          routes.MapRoute(
             name: "Default",
             url: "{controller}/{action}/{id}",
-            //defaults: new { controller = "Observation", action = "Edit", id=4} //,id = UrlParameter.Optional }
-            defaults: new {controller = "Users", action = "Chart", id = UrlParameter.Optional}
+            //defaults: new { controller = "Observation", action = "ObservationEdit", id=4} //,id = UrlParameter.Optional }
+            defaults: new {controller = "User", action = "Chart", id = UrlParameter.Optional}
          );
       }
    }

@@ -19,7 +19,7 @@ using Newtonsoft.Json;
 //todo: zeby marker image tez zmienal koor po najechaniu krusorem
 //todo:CRUD notek do cykli, gdzie?
 //todo:przenies do kontrolera USER i zrob jeden kontroler
-//todo:
+//todo:note is important update nie dziala dodaj
 //todo:
 //todo:
 //todo:
@@ -28,13 +28,11 @@ namespace NaproKarta.Controllers
    public class UserController : MyController
    {
       private NaproKartaDAL db = new NaproKartaDAL();
-
       private User currentUser
       {
          get => Session["currentUser"] as User;
          set => Session["currentUser"] = value;
       }
-
       private int currentChartId
       {
          get => (int)Session["currentChartID"];
@@ -44,16 +42,11 @@ namespace NaproKarta.Controllers
       // GET: Users
       public ActionResult Chart(int? id, int? chartId)
       {
-         if (id is null)
-         {
-            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-         }
+         if (id is null) return MyError("no user id"); //return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
          User user = db.Users.Find(id);
-         if (user is null)
-         {
-            return MyError("No user with this ID!");
-            //return HttpNotFound();
-         }
+         if (user is null)return MyError("No user with this ID!"); //return HttpNotFound();
+         
          ////todo:############### develop login procedure ##################################
          /// implement and move later, load embedded data
          currentUser = user;
@@ -136,7 +129,7 @@ namespace NaproKarta.Controllers
          return View(vm);
       }
 
-      // GET: Users/Edit/5
+      // GET: Users/ObservationEdit/5
       public ActionResult EditChart()
       {
          try
@@ -154,7 +147,7 @@ namespace NaproKarta.Controllers
          }
       }
 
-      // POST: Users/Edit/5
+      // POST: Users/ObservationEdit/5
       // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
       // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
       [HttpPost]
@@ -206,8 +199,6 @@ namespace NaproKarta.Controllers
             Console.WriteLine(e);
             throw;
          }
-
-
       }
 
       // POST: Users/Delete/5
@@ -238,196 +229,73 @@ namespace NaproKarta.Controllers
             Console.WriteLine(e);
             throw;
          }
-
       }
 
-      //public ActionResult EditObservation(int? id)
-      //{
-      //   if (id == null)
-      //   {
-      //      return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-      //   }
-
-      //   //todo:queystring
-      //   var RowCol = Request.QueryString.GetValues("RowCol")?.ToString();
-      //   if (RowCol is null)
-      //   {
-      //      return MyError("no rowcol");
-      //   }
-
-      //   int row = Convert.ToInt16(RowCol.Split(',')[0]);
-      //   int col = Convert.ToInt16(RowCol.Split(',')[1]);
-
-
-      //   //if (RowCol == null)
-      //   //{
-      //   //   return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-      //   //}
-      //   //int row = Convert.ToInt16(RowCol.Split(',')[0]);
-      //   //int col = Convert.ToInt16(RowCol.Split(',')[1]);
-      //   Session["field0"] = "value1";
-      //   //string field1 = (string)(Session["field0"]);
-
-      //   Observation obs = db.Observations.Find(id);
-      //   Session["field1"] = obs;
-      //   Session["field2"] = Json(obs);
-      //   Session["field3"] = JsonConvert.SerializeObject(obs, Formatting.Indented, new JsonSerializerSettings
-      //   {
-      //      ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-      //      PreserveReferencesHandling = PreserveReferencesHandling.Objects
-      //   });
-
-      //   try
-      //   {
-      //      ObservationEditVM vm = new ObservationEditVM(db);
-      //      if (obs != null) vm.FillFormDataFromExistedObservation(obs);
-      //      return View(vm);
-      //   }
-      //   catch (Exception e)
-      //   {
-      //      Console.WriteLine(e);
-      //      throw;
-      //   }
-      //}
-
-      //// POST: ObservationCellsVMList/Edit/5
-      //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-      //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-      //[HttpPost]
-      //[ValidateAntiForgeryToken]
-      //public ActionResult EditObservation(ObservationEditVM observationVM, string button)
-      //{
-      //   if (button == "Save")
-      //   {
-      //      if (ModelState.IsValid)
-      //      {
-      //         observationVM.UpdateObservation(db);
-      //         // db.Observations.Attach(observationVM.Observation);
-      //         // db.Entry(observationVM.Observation).State = EntityState.Modified;
-      //         // db.SaveChanges();
-      //         //* return RedirectToAction("Chart","User", new {id = observationVM.UserID});
-      //      }
-      //   }
-      //   if (button == "Cancel")
-      //   {
-      //      //* return RedirectToAction("Chart", "User", new { id = observationVM.UserID });
-      //   }
-
-      //   return View(observationVM);
-      //}
-
-      protected override void Dispose(bool disposing)
+      // GET: ObservationCellsVMList/ObservationEdit/5
+      public ActionResult ObservationEdit(int? id)
       {
-         if (disposing)
+         if (id == null) return MyError("no user id"); //return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+         if (Request.QueryString.IsNull()) return MyError("no querystring");
+
+         //todo:queystring
+         var RowCol = Request.QueryString.GetValues("RowCol")?.ToList();
+         if (RowCol is null)return MyError("no rowcol");
+
+         int row = Convert.ToInt16(RowCol[0].Split(',')[0]);
+         int col = Convert.ToInt16(RowCol[0].Split(',')[1]);
+
+         //Session["field0"] = "value1";
+         ////string field1 = (string)(Session["field0"]);
+         //Session["field1"] = obs;
+         //Session["field2"] = Json(obs);
+         //Session["field3"] = JsonConvert.SerializeObject(obs, Formatting.Indented,new JsonSerializerSettings{
+         //      ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+         //   PreserveReferencesHandling = PreserveReferencesHandling.Objects
+         //});
+
+         try
          {
-            db.Dispose();
+            ObservationEditVM vm = new ObservationEditVM(row, col);
+            Observation obs = db.Observations.Find(id);
+            if (obs != null) vm.FillFormDataFromExistedObservation(obs);
+            //Chart chart = Session["currentChart"] as Chart;
+            //ObservationEditVM vm = new ObservationEditVM(db, chart, row, col);
+            return View(vm);
          }
-         base.Dispose(disposing);
+         catch (Exception e)
+         {
+            Console.WriteLine(e);
+            throw;
+         }
       }
 
-      #region ####################################################################################
-      //// GET: Users
-      //public ActionResult Index()
-      //{
-      //   return View(db.Users.ToList());
-      //}
+      // POST: ObservationCellsVMList/ObservationEdit/5
+      // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+      // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+      [HttpPost, ActionName("ObservationEdit")]
+      [ValidateAntiForgeryToken]
+      public ActionResult ObservationEdit(ObservationEditVM vm, string button)
+      {
+         if (button == "Save")//todo:popraw to zeby nie zalezlo od jezyka moze jaki enum albo cos, i if/else a nie same ify
+         {
+            if (ModelState.IsValid)
+            {
+               if (vm.Chart is null) vm.Chart = currentUser.Charts.SingleOrDefault(c => c.ID == currentChartId);
+               vm.UpdateObservation();
+            }
+         }
+         else if (button == "Delete")//todo:popraw to zeby nie zalezlo od jezyka moze jaki enum albo cos, i if/else a nie same ify
+         { //todo: dorob delete observation i reset form w JS, i przenies do kontrolera USER
+            return RedirectToAction("DeleteObservation", "User", new { id = currentUser.ID, chartId = currentChartId });
+         }
+         else if (button == "Reset")
+         {
+            return RedirectToAction("ResetForm", "User", new { id = currentUser.ID, chartId = currentChartId });
+         }
+         return RedirectToAction("Chart", "User", new { id = currentUser.ID, chartId = currentChartId });
+         //return View(vm);
+      }
 
-
-      //// GET: Users/Details/5
-      //public ActionResult Details(int? id)
-      //{
-      //   if (id == null)
-      //   {
-      //      return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-      //   }
-      //   User user = db.Users.Find(id);
-      //   if (user == null)
-      //   {
-      //      return HttpNotFound();
-      //   }
-      //   return View(user);
-      //}
-
-      //// GET: Users/Create
-      //public ActionResult Create()
-      //{
-      //   return View();
-      //}
-
-      //// POST: Users/Create
-      //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-      //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-      //[HttpPost]
-      //[ValidateAntiForgeryToken]
-      //public ActionResult Create([Bind(Include = "ID,UserName,Email,RegisterDate,LastLoginDate")] User user)
-      //{
-      //   if (ModelState.IsValid)
-      //   {
-      //      db.Users.Add(user);
-      //      db.SaveChanges();
-      //      return RedirectToAction("Index");
-      //   }
-
-      //   return View(user);
-      //}
-
-      //// GET: Users/Edit/5
-      //public ActionResult Edit(int? id)
-      //{
-      //   if (id == null)
-      //   {
-      //      return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-      //   }
-      //   User user = db.Users.Find(id);
-      //   if (user == null)
-      //   {
-      //      return HttpNotFound();
-      //   }
-      //   return View(user);
-      //}
-
-      //// POST: Users/Edit/5
-      //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-      //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-      //[HttpPost]
-      //[ValidateAntiForgeryToken]
-      //public ActionResult Edit([Bind(Include = "ID,UserName,Email,RegisterDate,LastLoginDate")] User user)
-      //{
-      //   if (ModelState.IsValid)
-      //   {
-      //      db.Entry(user).State = EntityState.Modified;
-      //      db.SaveChanges();
-      //      return RedirectToAction("Index");
-      //   }
-      //   return View(user);
-      //}
-
-      //// GET: Users/Delete/5
-      //public ActionResult Delete(int? id)
-      //{
-      //   if (id == null)
-      //   {
-      //      return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-      //   }
-      //   User user = db.Users.Find(id);
-      //   if (user == null)
-      //   {
-      //      return HttpNotFound();
-      //   }
-      //   return View(user);
-      //}
-
-      //// POST: Users/Delete/5
-      //[HttpPost, ActionName("Delete")]
-      //[ValidateAntiForgeryToken]
-      //public ActionResult DeleteConfirmed(int id)
-      //{
-      //   User user = db.Users.Find(id);
-      //   db.Users.Remove(user);
-      //   db.SaveChanges();
-      //   return RedirectToAction("Index");
-      //}
-      #endregion
 
       public ActionResult DeleteObservation(int id, int chartid)
       {
@@ -437,6 +305,15 @@ namespace NaproKarta.Controllers
       public ActionResult ResetForm(int id, int chartid)
       {
          return MyError("reset form JS here");
+      }
+
+      protected override void Dispose(bool disposing)
+      {
+         if (disposing)
+         {
+            db.Dispose();
+         }
+         base.Dispose(disposing);
       }
    }
 }

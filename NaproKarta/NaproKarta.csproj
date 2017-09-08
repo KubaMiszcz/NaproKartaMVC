@@ -142,8 +142,6 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ObservationController.cs" />
     <Compile Include="Controllers\MyController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="DataAccessLayer\NaproKartaDAL.cs" />
@@ -310,35 +308,18 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\User\==\Create.cshtml" />
-    <Content Include="Views\User\==\Delete.cshtml" />
-    <Content Include="Views\User\==\Details.cshtml" />
-    <Content Include="Views\User\==\Edit.cshtml" />
-    <Content Include="Views\User\==\Index.cshtml" />
-    <Content Include="Views\Observation\==\Create.cshtml" />
-    <Content Include="Views\Observation\==\Delete.cshtml" />
-    <Content Include="Views\Observation\==\Details.cshtml" />
-    <Content Include="Views\Observation\Edit.cshtml" />
-    <Content Include="Views\Observation\==\Index.cshtml" />
+    <Content Include="Views\User\ObservationEdit.cshtml" />
     <Content Include="Views\User\Chart.cshtml" />
-    <Content Include="Views\User\_observationCell.cshtml" />
-    <Content Include="Views\Observation\==\Edit2.cshtml" />
-    <Content Include="Views\Observation\_letters.cshtml" />
-    <Content Include="Views\Observation\_ciphersCD.cshtml" />
-    <None Include="Views\Observation\_ciphers.cshtml" />
-    <Content Include="Views\Observation\==\View.cshtml" />
-    <Content Include="Views\Observation\_numTimes.cshtml" />
+    <Content Include="Views\User\observationCell.cshtml" />
+    <Content Include="Views\User\PartialObservationViews\letters.cshtml" />
+    <Content Include="Views\User\PartialObservationViews\ciphersCD.cshtml" />
+    <Content Include="Views\User\PartialObservationViews\ciphers.cshtml" />
+    <Content Include="Views\User\PartialObservationViews\numTimes.cshtml" />
     <Content Include="Views\Shared\DebugMessage.cshtml" />
-    <Content Include="Views\Observation\_comments.cshtml" />
+    <Content Include="Views\User\PartialObservationViews\comments.cshtml" />
     <Content Include="Views\User\CreateChart.cshtml" />
     <Content Include="Views\User\EditChart.cshtml" />
     <Content Include="Views\User\DeleteChart.cshtml" />
-    <Content Include="Views\User\EditObservation.cshtml" />
-    <Content Include="Views\User\PartialObservationViews\_ciphers.cshtml" />
-    <Content Include="Views\User\PartialObservationViews\_ciphersCD.cshtml" />
-    <Content Include="Views\User\PartialObservationViews\_comments.cshtml" />
-    <Content Include="Views\User\PartialObservationViews\_letters.cshtml" />
-    <Content Include="Views\User\PartialObservationViews\_numTimes.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
