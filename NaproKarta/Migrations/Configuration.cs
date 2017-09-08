@@ -41,24 +41,26 @@ namespace NaproKarta.Migrations
             "http://kubamiszcz.hekko24.pl/Naprokarta/img/markerYellowBaby.jpg",
             "http://kubamiszcz.hekko24.pl/Naprokarta/img/markerGrey.jpg" };
 
-         foreach (string item in lstr) {
+         foreach (string item in lstr)
+         {
             int i = lstr.IndexOf(item);
-            context.Markers.AddOrUpdate(p => p.Name, new Marker(item, lstr2.ElementAt(i))); }
-         
-         lstr = new List<string>() { "B", "C", "C/K", "G", "L", "P", "Y", "\"P\"" };
-         foreach (string item in lstr) { context.CiphersCD.AddOrUpdate(p => p.Value, new CipherCD(item)); }
+            context.Markers.AddOrUpdate(p => p.Name, new Marker(item, lstr2.ElementAt(i)));
+         }
 
-         lstr = new List<string>() { "0", "2", "2W", "4", "6", "8", "10", "10DL", "10SL", "10WL" };
-         foreach (string item in lstr) { context.Ciphers.AddOrUpdate(p => p.Value, new Cipher(item)); }
+         //lstr = new List<string>() { "0", "2", "2W", "4", "6", "8", "10", "10DL", "10SL", "10WL" };
+         //foreach (string item in lstr) { context.Ciphers.AddOrUpdate(p => p.Value, new Cipher(item)); }
 
-         lstr = new List<string>() { "M", "H", "L", "VL", "VVL" };
-         foreach (string item in lstr) { context.LetterValues.AddOrUpdate(p => p.Value, new LetterValue(item)); }
+         //lstr = new List<string>() { "B", "C", "C/K", "G", "L", "P", "Y", "\"P\"" };
+         //foreach (string item in lstr) { context.CiphersCD.AddOrUpdate(p => p.Value, new CipherCD(item)); }
 
-         lstr = new List<string>() { "X1", "X2", "X3", "AD" };
-         foreach (string item in lstr) { context.NumTimes.AddOrUpdate(p => p.Value, new NumTimes(item)); }
+         //lstr = new List<string>() { "M", "H", "L", "VL", "VVL" };
+         //foreach (string item in lstr) { context.Letters.AddOrUpdate(p => p.Value, new Letter(item)); }
 
-         lstr = new List<string>() { "admin", "user", "instructor" };
-         foreach (string item in lstr) { context.Roles.AddOrUpdate(p => p.Name, new Role(item)); }
+         //lstr = new List<string>() { "X1", "X2", "X3", "AD" };
+         //foreach (string item in lstr) { context.NumTimes.AddOrUpdate(p => p.Value, new NumTimes(item)); }
+
+         //lstr = new List<string>() { "admin", "user", "instructor" };
+         //foreach (string item in lstr) { context.Roles.AddOrUpdate(p => p.Name, new Role(item)); }
          #endregion
 
          #region seed example data

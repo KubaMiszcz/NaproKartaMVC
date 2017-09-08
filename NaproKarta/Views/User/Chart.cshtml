@@ -36,7 +36,7 @@
                         @Html.ActionLink("Edytuj właściwości tej karty", "EditChart", new { chartId = @Model.Chart.ID }, new { @class = "btn btn-primary btn-lg" })
                     </td>
                     <td style="padding-left: 20px">
-                        @Html.ActionLink("Utwórz kartę", "CreateChart", new { id = @Model.User.ID, prevChartId = @Model.Chart.ID }, new { @class = "btn btn-primary btn-lg" })
+                        @Html.ActionLink("Utwórz kartę", "CreateChart", new { id = @Model.User.ID}, new { @class = "btn btn-primary btn-lg" })
                     </td>
                     <td style="padding-left: 20px">
                         @Html.ActionLink("Usuń tą kartę", "DeleteChart", new { chartId = @Model.Chart.ID }, new { @class = "btn btn-danger btn-lg" })
@@ -64,7 +64,7 @@
                         <td>
                             @Html.TextAreaFor(c => cycleVm.Cycle.Note, new { @style = "height=100%;", @rows = "10", @cols = "80" })
                         </td>
-                       foreach (ObservationCellVM cellVm in cycleVm.ObservationCellsVMList)
+                       foreach (ObservationCellInChartVM cellVm in cycleVm.ObservationCellsVMList)
                        {
                         <td class="chartCell">@{ Html.RenderPartial("_observationCell", cellVm); }</td>
                        }

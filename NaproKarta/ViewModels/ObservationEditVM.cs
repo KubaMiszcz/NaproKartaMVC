@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
+using System.Web.ModelBinding;
 using System.Web.WebPages;
 using Microsoft.Ajax.Utilities;
 using NaproKarta.DataAccessLayer;
@@ -12,6 +13,7 @@ using NaproKarta.Models.ObservationModel;
 using NaproKarta.ViewModels;
 using NaproKarta.ViewModels.AuxiliaryVMs;
 using WebGrease.Css.Ast;
+using NaproKarta.Services;
 
 namespace NaproKarta.ViewModels
 {
@@ -27,56 +29,51 @@ namespace NaproKarta.ViewModels
       public List<List<string>> CiphersCDTwoColumns { get; set; } = new List<List<string>>();
 
       //Observation instance Data
-      public int ID { get; set; }
-      public int Row { get; set; }
-      public int Col { get; set; }
-      public int MarkerID { get; set; }
-      public DateTime Date { get; set; }
-      public Letter Letter { get; set; }
-      public Cipher Cipher { get; set; }
-      public CipherCD CipherCD { get; set; }
-      public NumTimes NumTimes { get; set; }
-      public Dictionary<string, bool> CommentsVM { get; set; } = new Dictionary<string, bool>();
+      //public int ID { get; set; }
+      //public int Row { get; set; }
+      //public int Col { get; set; }
+      //public int MarkerID { get; set; }
+      //public DateTime Date { get; set; }
+      //public Letter Letter { get; set; }
+      //public Cipher Cipher { get; set; }
+      //public CipherCD CipherCD { get; set; }
+      //public NumTimes NumTimes { get; set; }
+      public int? MarkerID { get; set; }
+      public List<string> CommentsDescriptons { get; set; } = new List<string>();
       public List<Note> NotesVM { get; set; } = new List<Note>();
       public List<String> NoteMarks { get; set; } = new List<string>();
       public List<string> NoteMarksBackgroundColors { get; set; } = new List<string>();
+      public Observation Observation { get; set; } = new Observation();
+      public Chart Chart { get; set; }
+      public int Row { get; set; }
+      public int Col { get; set; }
 
-      //
-
-
-      //public List<String> Marker { get; set; } = _blankSpace;
-      //public String Date { get; set; } = _blankSpace;
-      //public List<String> MarkerAltTextsList { get; set; } = _blankSpace;
-      //public List<String> LettersTwoColumns { get; set; } = _blankSpace;
-      //public List<String> NumTimesList { get; set; } = _blankSpace;
-      //public List<String> CiphersTwoColumns { get; set; } = _blankSpace;
-      //public List<String> CiphersCDlList { get; set; } = _blankSpace;
-      //public String Comments { get; set; } = _blankSpace;
-
-      private NaproKartaDAL db = new NaproKartaDAL();
+      private NaproKartaDAL db=new NaproKartaDAL();
       private static readonly string _blankSpace = "&nbsp;";
       private int numNotes = 3;
 
-      public ObservationEditVM() { }
-
-      public ObservationEditVM(NaproKartaDAL dbcontext)// : this()
+      public ObservationEditVM()
       {
-         db = dbcontext;
-         MakeCleanForm();
+         CommentsDescriptons = MyServices.CommentsDescriptions;
+         PopulateFormLabels();
       }
 
-      public void MakeCleanForm()
+      public ObservationEditVM(NaproKartaDAL dbContext, int row, int col) : this()
+      {
+         //db = dbContext;
+         Row = row;
+         Col = col;
+      }
+
+      public void PopulateFormLabels()
       {
          //populate form field data descriptions
-         Date=DateTime.Now;
-         MarkersList = db.Markers.ToList();
-         LettersTwoColumns = SplitList(db.LetterValues.Select(l => l.Value).ToList(), 3);
-         NumTimesList = db.NumTimes.Select(l => l.Value).ToList();
-         CiphersTwoColumns = SplitList(db.Ciphers.Select(l => l.Value).ToList(), 4);
-         CiphersCDTwoColumns = SplitList(db.CiphersCD.Select(l => l.Value).ToList(), 4);
-         CommentsVM.Add("Wizyta", false);
-         CommentsVM.Add("Badania", false);
-         CommentsVM.Add("Lupucupu", false);
+         Observation.Date = DateTime.Now;
+         MarkersList = MyServices.MarkersList;
+         LettersTwoColumns = SplitList(MyServices.LettersList.Select(x => x.ToString()).ToList(), 3);
+         NumTimesList = MyServices.NumTimesList.Select(x => x.ToString()).ToList();
+         CiphersTwoColumns = SplitList(MyServices.CiphersList.Select(l => l.ToString()).ToList(), 4);
+         CiphersCDTwoColumns = SplitList(MyServices.CiphersCDlList.Select(l => l.ToString()).ToList(), 4);
          for (int i = 0; i < numNotes; i++)
          {
             NotesVM.Add(new Note(" "));
@@ -85,64 +82,87 @@ namespace NaproKarta.ViewModels
          }
       }
 
-      public void FillFormData(Observation o)
+      public void FillFormDataFromExistedObservation(Observation o)
       {
          //current observation values
-         MarkerID = o.Marker.ID;
-         Date = o.Date;
-         Letter = o.Letter;
-         Cipher = o.Cipher;
-         CipherCD = o.CipherCD;
-         NumTimes = o.NumTimes;
-         CommentsVM["Wizyta"] = o.Comments.Visit;
-         CommentsVM["Badania"] = o.Comments.MedicalTest;
-         CommentsVM["Lupucupu"] = o.Comments.Lupucupu;
-
-         int i = 0;
-         foreach (Note note in o.Notes)
+         Observation = o;
+         for (int i = 0; i < Observation.Notes.Count; i++)
          {
+            Note note = Observation.Notes[i];
             NotesVM[i] = note;
-            NoteMarks[i] = note.Content.Length<1?" ":note.Content.Substring(0, 1).ToUpper(); 
-            NoteMarksBackgroundColors[i] = note.IsImportant ? "background-color: red; " : "";
+            NoteMarks[i] = note.Content.Length < 1 ? " " : note.Content.Trim().Substring(0, 1).ToUpper();
+            NoteMarksBackgroundColors[i] = note.IsImportant ? "background-color: blue; " : "";
          }
       }
 
-      public void UpdateObservation(NaproKartaDAL db)
+      public void UpdateObservation(Observation observationToUpdatee)
       {
-         //Observation.MarkerID = MarkerID;
-         //Observation.Date = DateTime.Parse(Date);
-         ////db.Entry(Observation.Letter).State = EntityState.Modified;
-         //db.Observations.Attach(Observation);
-         //db.Ciphers.Attach(Observation.Cipher);
-         //db.Entry(Observation.Cipher).State = EntityState.Modified;
+         Observation observationToUpdate = db.Observations.Include(o => o.Notes).SingleOrDefault(i => i.ID == Observation.ID);
 
-         //bool anyCommentExists = false;
-         //foreach (CommentsVM commentVm in CommentsVM)
-         //{
-         //   anyCommentExists = anyCommentExists || commentVm.Checked;
-         //}
-         //if (anyCommentExists)
-         //{
-         //   Comments comment = new Comments();
-         //   comment.Visit = CommentsVM[0].Checked;
-         //   comment.MedicalTest = CommentsVM[1].Checked;
-         //   comment.Lupucupu = CommentsVM[2].Checked;
-         //   Observation.Comments = comment;
-         //}
+         if (observationToUpdate is null) //observation doesnt exist
+         {
 
-         //List<Note> noteList=new List<Note>();
-         //for (int i = 0; i < numNotes; i++)
-         //{
-         //   if (Observation.Notes[i].Content.Trim().IsEmpty()) {Observation.Notes.RemoveAt(i);}
-         //   else
-         //   {
-         //      db.Entry(Observation.Notes[i]).State = EntityState.Modified;
-         //   }
-         //}
+
+            Cycle cycle = Chart?.Cycles?.SingleOrDefault(c => c.RowNumber == Row);
+            if (cycle is null)//cycle doesnt eixst
+            {
+               cycle = new Cycle();
+               cycle.RowNumber = Row;
+               Chart.AddCycle(cycle);
+               db.Cycles.Add(cycle);
+            }
+            observationToUpdate=new Observation();
+            cycle.AddObservation(observationToUpdate);
+            db.Observations.Add(observationToUpdate);
+         }
+         db.SaveChanges();
+
+         //update fields
+         observationToUpdate.ColNumber = Col;
+         if (MarkerID !=null)
+         {
+            observationToUpdate.MarkerID = MyServices.MarkersList.SingleOrDefault(l => l.ID == MarkerID)?.ID;
+         }
+         observationToUpdate.Date = Observation.Date;
+         observationToUpdate.LetterID = MyServices.LettersList.SingleOrDefault(l => l.Value == Observation.Letter?.Value)?.ID;
+         observationToUpdate.LetterIsB = Observation.LetterIsB;
+         observationToUpdate.CipherID = MyServices.CiphersList.SingleOrDefault(l => l.Value == Observation.Cipher?.Value)?.ID;
+         observationToUpdate.CipherCDID = MyServices.CiphersCDlList.SingleOrDefault(l => l.Value == Observation.CipherCD?.Value)?.ID;
+         observationToUpdate.NumTimesID = MyServices.NumTimesList.SingleOrDefault(l => l.Value == Observation.NumTimes?.Value)?.ID;
+         observationToUpdate.CommentVisit = Observation.CommentVisit;
+         observationToUpdate.CommentMedicalTest = Observation.CommentMedicalTest;
+         observationToUpdate.CommentLupucupu = Observation.CommentLupucupu;
+         foreach (Note note in NotesVM)//todo: przeorb bo usuwanie notek kilku usuwa tylko jedna, potestuj kombinacje i zrob jako dwie tablice itp notek...
+         {
+            int i = NotesVM.IndexOf(note);
+            if ((observationToUpdate.Notes?.ElementAtOrDefault(i)?.Content).IsNullOrEmpty()) //note doesnt exist
+            {
+               if (!(note.Content?.Trim()).IsNullOrEmpty())
+               {
+                  observationToUpdate.AddNote(note); //if user wrote sth
+                  db.Notes.Add(note);
+               }
+            }
+            else //note exist
+            {
+               Note noteToUpdate = observationToUpdate.Notes[i];
+               if ((note.Content?.Trim()).IsNullOrEmpty()) //and user wrotes nothing => delete note
+               {
+                  observationToUpdate?.Notes?.Remove(noteToUpdate);
+                  db.Notes.Remove(noteToUpdate);
+               }
+               else
+               {
+                  noteToUpdate.Content = note.Content.Trim(); //update note
+                  db.Entry(noteToUpdate).State = EntityState.Modified;
+                  db.Entry(observationToUpdate).State = EntityState.Modified;
+               }
+            }
+         }
          //db.SaveChanges();
 
-         //db.Entry(Observation).State = EntityState.Modified;
-         //db.SaveChanges();
+         db.Entry(observationToUpdate).State = EntityState.Modified;
+         db.SaveChanges();
       }
 
 
@@ -160,7 +180,5 @@ namespace NaproKarta.ViewModels
          result.Add(srcLst.GetRange(i, srcLst.Count - i));
          return result;
       }
-
-
    }
 }

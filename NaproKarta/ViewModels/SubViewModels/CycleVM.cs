@@ -8,20 +8,26 @@ namespace NaproKarta.ViewModels.AuxiliaryVMs
    {
       public string Title { get; set; } = "";
       public Cycle Cycle { get; set; }
-      public List<ObservationCellVM> ObservationCellsVMList { get; set; } = new List<ObservationCellVM>();
+      public List<ObservationCellInChartVM> ObservationCellsVMList { get; set; } = new List<ObservationCellInChartVM>();
       public int NumObservationsInCycle { get; set; } = 35;
       private int NumWeeksInCycle { get; set; }
       public CycleVM()
       {
          NumWeeksInCycle = NumObservationsInCycle / 7;
-         for (int i = 0; i < NumObservationsInCycle; i++)
-         {
-            ObservationCellsVMList.Add(new ObservationCellVM());
-         }
+         MakeCleanCycle();
       }
+
       public CycleVM(Cycle cycle) : this()
       {
          Cycle = cycle;
+      }
+
+      private void MakeCleanCycle()
+      {
+         for (int i = 0; i < NumObservationsInCycle; i++)
+         {
+            ObservationCellsVMList.Add(new ObservationCellInChartVM());
+         }
       }
 
    }

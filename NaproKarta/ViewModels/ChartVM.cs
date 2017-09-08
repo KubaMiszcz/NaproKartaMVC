@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Data.Entity.Core.Metadata.Edm;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Web.Mvc;
 using NaproKarta.DataAccessLayer;
@@ -18,9 +19,8 @@ namespace NaproKarta.ViewModels
       public string Title { get; set; } = "";
       public IList<string> ColumnHeaders { get; set; }=new List<string>();
       public User User { get; set; }
-      public Chart Chart { get; set; }
+      public Chart Chart { get; set; }=new Chart();
       public List<CycleVM> CyclesVM { get; set; } = new List<CycleVM>();
-      public int PrevChartID { get; set; }
 
       public List<SelectListItem> UserChartNames
       {
@@ -44,47 +44,16 @@ namespace NaproKarta.ViewModels
 
       public ChartVM()
       {
-         for (int i = 0; i < NumCyclesInChart; i++)
-         {
-            CyclesVM.Add(new CycleVM());
-         }
-         SetRowColLabels();
-         ColumnHeaders.Add("Notka");
-         for (int k = 0; k < CyclesVM[0].NumObservationsInCycle; k++)
-         {
-            ColumnHeaders.Add((k+1).ToString());
-         }
+         MakeClearChart();
+         SetRowColLabelsForCellsInView();
+         Make1stRowWithHeaders();
       }
-
-      private void SetRowColLabels()
-      {
-         int row = 0;
-         foreach (CycleVM cycleVm in CyclesVM)
-         {
-            int col = 0;
-            foreach (ObservationCellVM cellVm in cycleVm.ObservationCellsVMList)
-            {
-               CyclesVM[row].ObservationCellsVMList[col].RowCol = row+","+col;
-               col++;
-            }
-            row++;
-         }
-      }
-
+      
       public ChartVM(User user, Chart chart) : this()
       {
          User = user;
          Chart = chart;
-         PrevChartID = Chart.ID;
-         foreach (Cycle cycle in Chart)
-         {
-            int k = cycle.RowNumber;
-            foreach (Observation observation in cycle)
-            {
-               int i = observation.ColNumber;
-               CyclesVM[k].ObservationCellsVMList[i] = (new ObservationCellVM(observation));
-            }
-         }
+         FillChartWithValues();
       }
 
       public void UpdateChart(Chart chart)
@@ -94,9 +63,61 @@ namespace NaproKarta.ViewModels
          Chart = chart;
       }
 
-      public void AddCycle(CycleVM cycleVm)
+      private void MakeClearChart()
       {
-         CyclesVM.Add(cycleVm);
+         for (int i = 0; i < NumCyclesInChart; i++)
+         {
+            CyclesVM.Add(new CycleVM());
+         }
+      }
+
+      private void Make1stRowWithHeaders()
+      {
+         ColumnHeaders.Add("Notka");
+         for (int k = 0; k < CyclesVM[0].NumObservationsInCycle; k++)
+         {
+            ColumnHeaders.Add((k + 1).ToString());
+         }
+      }
+
+      private void SetRowColLabelsForCellsInView()
+      {
+         int row = 0;
+         foreach (CycleVM cycleVm in CyclesVM)
+         {
+            int col = 0;
+            foreach (ObservationCellInChartVM cellVm in cycleVm.ObservationCellsVMList)
+            {
+               CyclesVM[row].ObservationCellsVMList[col].RowCol = row + "," + col;
+               col++;
+            }
+            row++;
+         }
+      }
+
+      private void FillChartWithValues()
+      {
+         foreach (Cycle cycle in Chart)
+         {
+            int k = cycle.RowNumber;
+            foreach (Observation observation in cycle)
+            {
+               int i = observation.ColNumber;
+               try
+               {
+                  CyclesVM[k].ObservationCellsVMList[i] = (new ObservationCellInChartVM(observation));
+               }
+               catch (Exception e)
+               {
+                  Console.WriteLine(e);
+                  throw;
+               }
+            }
+         }
       }
    }
+
+
+
+
 }

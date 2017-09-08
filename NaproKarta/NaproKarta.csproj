@@ -150,19 +150,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201709041511255_napro3.cs" />
-    <Compile Include="Migrations\201709041511255_napro3.Designer.cs">
-      <DependentUpon>201709041511255_napro3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201709041513042_napro4.cs" />
-    <Compile Include="Migrations\201709041513042_napro4.Designer.cs">
-      <DependentUpon>201709041513042_napro4.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Chart.cs" />
     <Compile Include="Models\SubModels\CipherCD.cs" />
-    <Compile Include="Models\SubModels\Comments.cs" />
-    <Compile Include="Models\SubModels\LetterValue.cs" />
     <Compile Include="Models\SubModels\Note.cs" />
     <Compile Include="Models\SubModels\NumTimes.cs" />
     <Compile Include="Models\SubModels\Cipher.cs" />
@@ -180,7 +170,7 @@
     <Compile Include="ViewModels\SubViewModels\ErrorProvider.cs" />
     <Compile Include="ViewModels\ObservationEditVM.cs" />
     <Compile Include="ViewModels\SubViewModels\CycleVM.cs" />
-    <Compile Include="ViewModels\SubViewModels\ObservationCellVM.cs" />
+    <Compile Include="ViewModels\SubViewModels\ObservationCellInChartVM.cs" />
     <Compile Include="ViewModels\ChartVM.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -343,6 +333,12 @@
     <Content Include="Views\User\CreateChart.cshtml" />
     <Content Include="Views\User\EditChart.cshtml" />
     <Content Include="Views\User\DeleteChart.cshtml" />
+    <Content Include="Views\User\EditObservation.cshtml" />
+    <Content Include="Views\User\PartialObservationViews\_ciphers.cshtml" />
+    <Content Include="Views\User\PartialObservationViews\_ciphersCD.cshtml" />
+    <Content Include="Views\User\PartialObservationViews\_comments.cshtml" />
+    <Content Include="Views\User\PartialObservationViews\_letters.cshtml" />
+    <Content Include="Views\User\PartialObservationViews\_numTimes.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -352,14 +348,6 @@
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.1.1.min.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201709041511255_napro3.resx">
-      <DependentUpon>201709041511255_napro3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201709041513042_napro4.resx">
-      <DependentUpon>201709041513042_napro4.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

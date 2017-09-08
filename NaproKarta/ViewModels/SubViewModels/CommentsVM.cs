@@ -5,15 +5,15 @@ using NaproKarta.Models.ObservationModel;
 
 namespace NaproKarta.ViewModels.AuxiliaryVMs
 {
-   [NotMapped]
-   public class CommentsVM
-   {
-      public Dictionary<string,bool> Comment { get; set; } = new Dictionary<string, bool>();
-      public CommentsVM()
-      {
-         Comment.Add("Wizyta",false);
-         Comment.Add("Badania", false);
-         Comment.Add("Lupucupu", false);
-      }
-   }
+   //[NotMapped]
+   //public class CommentsVM
+   //{
+   //   public Dictionary<string,bool> Comment { get; set; } = new Dictionary<string, bool>();
+   //   public CommentsVM()
+   //   {
+   //      Comment.Add("Wizyta",false);
+   //      Comment.Add("Badania", false);
+   //      Comment.Add("CommentLupucupu", false);
+   //   }
+   //}
 }

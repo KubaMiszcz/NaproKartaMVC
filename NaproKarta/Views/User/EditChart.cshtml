@@ -4,6 +4,7 @@
 {
 @Html.AntiForgeryToken()
 @Html.HiddenFor(m => m.Chart.ID)
+@Html.HiddenFor(m => m.Chart.UserID)
 <div class="form-horizontal">
     <hr />
     <div class="panel panel-success">

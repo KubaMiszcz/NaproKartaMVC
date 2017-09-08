@@ -16,7 +16,7 @@ namespace NaproKarta.Models.ObservationModel
       public Note() { }
       public Note(string str, bool val=false):this()
       {
-         Content = str;
+         Content = str.Trim();
          IsImportant = val;
       }
    }

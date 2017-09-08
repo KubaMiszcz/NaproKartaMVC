@@ -33,5 +33,12 @@ namespace NaproKarta.Models
       {
          return this.GetEnumerator();
       }
+
+      public void AddObservation(Observation observation)
+      {
+         observation.CycleID = ID;
+         if (Observations is null)Observations = new List<Observation>();
+         Observations.Add(observation);
+      }
    }
 }

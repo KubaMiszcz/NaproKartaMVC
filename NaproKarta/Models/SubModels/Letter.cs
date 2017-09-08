@@ -6,18 +6,16 @@ namespace NaproKarta.Models.ObservationModel
    {
       [Key]
       public int ID { get; set; }
-
-      public int ValueID { get; set; }
-      public virtual LetterValue Value { get; set; }
-
-      public bool IsB { get; set; }
-
-      private static readonly string _blankSpace = "&nbsp;";
-
+      public string Value { get; set; }
       public Letter() { }
+
+      public Letter(string str)
+      {
+         Value = str;
+      }
       public override string ToString()
       {
-         return (Value is null) ? "" : Value.Value; //) + (IsB ? "B" : "");
+         return Value??" ";
       }
    }
 }

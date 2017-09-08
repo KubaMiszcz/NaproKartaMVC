@@ -15,11 +15,9 @@ namespace NaproKarta.DataAccessLayer
       public DbSet<Observation> Observations { get; set; }
       public DbSet<Marker> Markers { get; set; }
       public DbSet<Letter> Letters { get; set; }
-      public DbSet<LetterValue> LetterValues { get; set; }
       public DbSet<Cipher> Ciphers { get; set; }
       public DbSet<CipherCD> CiphersCD { get; set; }
       public DbSet<NumTimes> NumTimes { get; set; }
-      public DbSet<Comments> Comments { get; set; }
       public DbSet<Note> Notes { get; set; }
       public DbSet<Chart> Charts { get; set; }
       public DbSet<Cycle> Cycles { get; set; }

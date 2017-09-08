@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using Microsoft.Ajax.Utilities;
 using NaproKarta.Models;
 using NaproKarta.Models.ObservationModel;
+using NaproKarta.Services;
 
 namespace NaproKarta.ViewModels.AuxiliaryVMs
 {
-   public class ObservationCellVM : IVIewModel
+   public class ObservationCellInChartVM : IVIewModel
    {
       public string Title { get; set; } = "Twoje Karty";
       public Observation Observation { get; set; }
@@ -16,6 +17,7 @@ namespace NaproKarta.ViewModels.AuxiliaryVMs
       public String MarkerAltText { get; set; } = "none";
       public String Date { get; set; } = _blankSpace;
       public String Letter { get; set; } = _blankSpace;
+      public bool LetterIsB { get; set; } 
       public String CipherAndCipherCD { get; set; } = _blankSpace;
       public String NumTimes { get; set; } = _blankSpace;
       public String Comments { get; set; } = _blankSpace;
@@ -24,11 +26,11 @@ namespace NaproKarta.ViewModels.AuxiliaryVMs
       public string RowCol { get; set; } = "";
       private static readonly string _blankSpace = "&nbsp;";
 
-      public ObservationCellVM()
+      public ObservationCellInChartVM()
       {
       }
 
-      public ObservationCellVM(Observation o) : this()
+      public ObservationCellInChartVM(Observation o) : this()
       {
          try
          {
@@ -36,24 +38,24 @@ namespace NaproKarta.ViewModels.AuxiliaryVMs
             ID = o.ID;
             RowCol = o.Cycle.RowNumber + "," + o.ColNumber;
 
-            MarkerUrl = o.Marker.MarkerUrl;
-            MarkerAltText = o.Marker.Name;
+            MarkerUrl = o.Marker?.MarkerUrl??MyServices.MarkerNone.MarkerUrl;
+            MarkerAltText = o.Marker?.Name??MyServices.MarkerNone.Name;
 
             Date = (o.Date.Year < 1990) ? _blankSpace : o.Date.ToString("MMM-dd");
-            Letter = o.Letter.IfNotNull(l => l.ToString(), _blankSpace);
-            Letter += o.Letter.IfNotNull(l => l.IsB ? " B" : "");
+            Letter = o.Letter?.ToString()??_blankSpace;
+            Letter += o.LetterIsB? " B" : "";
 
-            CipherAndCipherCD = o.Cipher.IfNotNull(l => l.ToString(), _blankSpace);
-            CipherAndCipherCD += o.CipherCD.IfNotNull(l => _blankSpace + l.ToString(), _blankSpace);
+            CipherAndCipherCD = o.Cipher?.ToString()??_blankSpace;
+            CipherAndCipherCD += o.CipherCD?.ToString()??_blankSpace;
 
-            NumTimes = o.NumTimes.IfNotNull(l => l.ToString(), _blankSpace);
-            Comments = o.Comments.IfNotNull(l => l.ToString(), _blankSpace);
+            NumTimes = o.NumTimes?.ToString()??_blankSpace;
+            Comments = o.Comments;
 
             int i = 0;
             foreach (var note in o.Notes)
             {
-               NoteMarks[i] = note.Content.Substring(0, 1).ToUpper();
-               NoteMarksBackgroundColors[i] = note.IsImportant ? "background-color: red;  " : "";
+               NoteMarks[i] = note.Content.Trim().Substring(0, 1).ToUpper();
+               NoteMarksBackgroundColors[i] = note.IsImportant ? "background-color: blue; color: white;  " : "";
                i++;
             }
          }

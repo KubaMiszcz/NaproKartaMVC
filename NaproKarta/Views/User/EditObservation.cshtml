@@ -3,16 +3,18 @@
 @{
    ViewBag.Title = "Edit Observation in: " + @Model.Observation.Date;
 }
-<br />
+
 @using (Html.BeginForm())
 {
 @Html.AntiForgeryToken()
-@Html.HiddenFor(model => model.Row)
-@Html.HiddenFor(model => model.Col)
 <div>
     <table>
         @*Header*@
         <tr>
+            <td>
+                <h3>Edit Observation in:&nbsp;</h3>
+                <h3 class="debug">@Model.Observation.ID</h3>
+            </td>
             <td>
                 <button type="button" name="" id="" value="" class="btn btn-default" style="height: 50%; width: auto">
                     Prev obsCell
@@ -24,13 +26,11 @@
                 </button>
             </td>
             <td>
-                <h3>Edit Observation in:&nbsp;</h3>
-                <h3 class="debug">@Model.Observation.ID</h3>
-            </td>
-            <td>
-                <div class="col-md-12">
+                <div class="col-md-10">
+                    @*xxx*@
                     @Html.EditorFor(model => model.Observation.Date, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.Observation.Date, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.Observation.Date, new { htmlAttributes = new { @class = "form-control " } })
                 </div>
             </td>
             <td>
@@ -53,6 +53,8 @@
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Observation.ID)
+        @*@Html.HiddenFor(model => Model.MarkerID)*@
+
         @*marker row*@
         <div class="groupBox" style="text-align: center">
             <table>
@@ -60,13 +62,12 @@
                     @foreach (var item in Model.MarkersList)
                     {
                     <td style="text-align: center; padding-right: 10px">
-                        @Html.HiddenFor(model => Model.MarkerID)
                         <button type="button"
                                 class="btn btn-default"
                                 value="@item.ID"
                                 @*value="@item"*@
                                 @*style="background-color: red"*@
-                                onclick="SetProperty('@Html.NameFor(m => m.MarkerID)', this.value)">
+                                onclick="SetProperty('@Html.NameFor(m=>m.Observation.MarkerID)',this.value)">
                             <img src="@item.MarkerUrl" alt="@item.Name" style="width: 60px; height: auto" />
                         </button>
                     </td>
@@ -80,23 +81,23 @@
                 <tr>
                     <td style="vertical-align: top; ">
                         @*letters*@
-                        @{ Html.RenderPartial("_letters", Model); }
+                        @{ Html.RenderPartial("PartialObservationViews/_letters", Model); }
                     </td>
                     <td>
                         @*ciphers*@
-                        @{ Html.RenderPartial("_ciphers", Model); }
+                        @{ Html.RenderPartial("PartialObservationViews/_ciphers", Model); }
                     </td>
                     <td>
                         @*ciphersCD*@
-                        @{ Html.RenderPartial("_ciphersCD", Model); }
+                        @{ Html.RenderPartial("PartialObservationViews/_ciphersCD", Model); }
                     </td>
                     <td>
                         @*Numtimes*@
-                        @{ Html.RenderPartial("_numTimes", Model); }
+                        @{ Html.RenderPartial("PartialObservationViews/_numTimes", Model); }
                     </td>
                     <td>
                         @*Comments*@
-                        @{ Html.RenderPartial("_comments", Model); }
+                        @{ Html.RenderPartial("PartialObservationViews/_comments", Model); }
                     </td>
                 </tr>
             </table>
@@ -109,23 +110,21 @@
         <div class="groupBox" style="float: left">
             <table style="width: 620px">
                 @{
-                   foreach (var note in Model.NotesVM)
+                   foreach (var note in Model.Observation.Notes)
                    {
-                       int i = Model.NotesVM.IndexOf(note);
+                       int i = Model.Observation.Notes.IndexOf(note);
+                       @Html.HiddenFor(model => model.Observation.Notes[i].ID)
                     <tr>
                         <td style="padding: 10px">
-                            @*@Html.HiddenFor(model => model.NotesVM[i].ID)*@
                             @*@Html.HiddenFor(model => model.Observation.Notes[i].Observation_ID)*@
                             @*<input type="checkbox" name="@Html.NameFor(m => m.Observation.NotesVM[i].IsImportant)" val="@Model.Observation.NotesVM[i].IsImportant" @(note.IsImportant ? "checked" : "")>*@
-                            @Html.CheckBoxFor(m => m.NotesVM[i].IsImportant, new
-                       { @*@checked = "checked"*@ })
+                            @Html.CheckBoxFor(m => m.Observation.Notes[i].IsImportant, new { @checked = "checked" })
                         </td>
-                        <td style="padding: 5px">
-                            @*<input type="text" name="@Html.NameFor(m => m.NoteMarks)" value="@Model.NoteMarks[i]" style="@Model.NoteMarksBackgroundColors[i];">*@
-                            @Html.TextBoxFor(m => m.NoteMarks[i], new { @width = "30px" })
+                        <td style="padding: 5px">  @*xxx tutaj zmein an arazor code html helper*@
+                            <input type="text" name="@Html.NameFor(m => m.NoteMarks)" value="@Model.NoteMarks[i]" style="@Model.NoteMarksBackgroundColors[i];">
                         </td>
                         <td class="col-md-12" style="padding: 5px">
-                            @Html.TextAreaFor(m => m.NotesVM[i].Content, 3, 40, new { @class = "form-control" })
+                            @Html.TextAreaFor(m => m.Observation.Notes[i].Content, 3, 40, new { @class = "form-control" })
                         </td>
                     </tr>
                    }
@@ -137,17 +136,14 @@
         <div class="col-md-12" style="text-align: center; float: left">
             <table style="width: 100%">
                 <tr>
-                    <td style="width: 25%;  ">
+                    <td style="width: 50%;  ">
                         <input type="submit" id="button" name="button" value="Cancel" class="btn btn-info btn-block" />
                     </td>
-                    <td style="width: 25%;  ">
+                    <td style="width: 50%;  ">
                         <input type="submit" id="button" name="button" value="Save" class="btn btn-info btn-block" />
                     </td>
-                    <td style="width: 25%;  ">
+                    <td style="width: 50%;  ">
                         <input type="submit" id="button" name="button" value="Delete" class="btn btn-danger btn-block" />
-                    </td>
-                    <td style="width: 25%;  ">
-                        <input type="submit" id="button" name="button" value="ResetForm" class="btn btn-warning btn-block" />
                     </td>
                 </tr>
             </table>

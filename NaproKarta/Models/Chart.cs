@@ -40,5 +40,11 @@ namespace NaproKarta.Models
       }
 
 
+      public void AddCycle(Cycle cycle)
+      {
+         cycle.ChartID = ID;
+         if (Cycles is null)Cycles=new List<Cycle>();
+         Cycles.Add(cycle);
+      }
    }
 }

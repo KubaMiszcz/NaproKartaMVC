@@ -15,7 +15,7 @@ namespace NaproKarta.Models.ObservationModel
       }
       public override string ToString()
       {
-         return Value;
+         return Value??"";
       }
    }
 }

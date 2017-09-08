@@ -48,5 +48,12 @@ namespace NaproKarta.Models.UserModel
          LastLoginDate = dateTime2;
          Role = role;
       }
+
+      public void AddChart(Chart chart)
+      {
+         chart.UserID = ID;
+         if (Charts is null)Charts=new List<Chart>();
+         Charts.Add(chart);
+      }
    }
 }
