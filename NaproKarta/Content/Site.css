@@ -26,6 +26,21 @@ textarea {
     max-width: 280px;
 }
 
+input[type="checkbox"] {
+    transform: scale(2);
+    -ms-transform: scale(2);
+    -webkit-transform: scale(2);
+    padding: 10px;
+}
+
+input[type="radio"] {
+    transform: scale(1.8);
+    -ms-transform: scale(1.8);
+    -webkit-transform: scale(1.8);
+    padding: 10px;
+}
+
+
 /*chart styles*/
 .Chart {
     border: 4px solid black;
@@ -88,8 +103,19 @@ textarea {
 
 
 
+
 /*td {
     border: 1px dotted red;
     border-radius: 15px;
 }*/
 
+.runchecked {
+    
+}
+
+
+
+.rchecked {
+    color: white;
+    background-color: green;
+}

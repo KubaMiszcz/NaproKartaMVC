@@ -10,11 +10,14 @@
                     @foreach (var item in col)
                     {
                     <tr>
+
                         <td style="text-align: left; padding-right: 15px">
-                            <label style="padding: 1px; margin: 1px">
-                                @Html.RadioButtonFor(x => x.Observation.CipherCD.Value, item)
-                                @item
-                            </label>
+                            <div id=@item onclick="ColorOnCheck(this.id)" class="runchecked" >
+                                <label style="padding: 1px; margin: 1px" >
+                                    @Html.RadioButtonFor(x => x.Observation.CipherCD.Value, item, new { @style = "color: red; background: red" })
+                                    @item
+                                </label>
+                            </div>
                         </td>
                     </tr>
                     }

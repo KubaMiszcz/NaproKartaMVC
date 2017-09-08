@@ -113,19 +113,16 @@
                    {
                        int i = Model.NotesVM.IndexOf(note);
                     <tr>
-                        <td style="padding: 10px">
-                            @*@Html.HiddenFor(model => model.NotesVM[i].ID)*@
-                            @*@Html.HiddenFor(model => model.Observation.Notes[i].Observation_ID)*@
-                            @*<input type="checkbox" name="@Html.NameFor(m => m.Observation.NotesVM[i].IsImportant)" val="@Model.Observation.NotesVM[i].IsImportant" @(note.IsImportant ? "checked" : "")>*@
-                            @Html.CheckBoxFor(m => m.NotesVM[i].IsImportant, new
-                       { @*@checked = "checked"*@ })
+                        <td style="padding: 10px" >
+                            @Html.CheckBoxFor(m => m.NotesVM[i].IsImportant,
+                          new { @checked = "checked", @class= "inputCheckBox",
+                              @onchange = "NoteMarkUpdateColor(this.id, 'NoteMarkId" + @i + "')" })
                         </td>
                         <td style="padding: 5px">
-                            @*<input type="text" name="@Html.NameFor(m => m.NoteMarks)" value="@Model.NoteMarks[i]" style="@Model.NoteMarksBackgroundColors[i];">*@
-                            @Html.TextBoxFor(m => m.NoteMarks[i], new { @width = "30px" })
+                            @Html.TextBoxFor(m => m.NoteMarks[i], new { @width = "30px", @style = @Model.NoteMarksBackgroundColors[i], @id = "NoteMarkId" + @i })
                         </td>
                         <td class="col-md-12" style="padding: 5px">
-                            @Html.TextAreaFor(m => m.NotesVM[i].Content, 3, 40, new { @class = "form-control" })
+                            @Html.TextAreaFor(m => m.NotesVM[i].Content, 3, 40, new { @class = "form-control", @onkeyup = "NoteMarkUpdateLetter(this.id,'NoteMarkId" + @i + "')" })
                         </td>
                     </tr>
                    }

@@ -10,7 +10,7 @@
                     {
                     <tr>
                         <td style="text-align: left; padding-right: 15px">
-                            <label style="padding: 1px; margin: 1px">
+                            <label style="padding: 1px; margin: 1px" >
                                 @Html.RadioButtonFor(x => x.Observation.Letter.Value, item)
                                 @item
                             </label>
@@ -24,7 +24,7 @@
         <tr>
             <td style="padding: 5px; height: 20%">
                 <label>
-                    @Html.CheckBoxFor(m => m.Observation.LetterIsB, new { @*@checked = "checked"*@ })
+                    @Html.CheckBoxFor(m => m.Observation.LetterIsB, new { @checked = "checked"  })
                     &nbsp; B
                 </label>
                 @*<div class="checkbox">

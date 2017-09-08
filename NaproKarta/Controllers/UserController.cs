@@ -20,9 +20,19 @@ using Newtonsoft.Json;
 //todo:CRUD notek do cykli, gdzie?
 //todo:przenies do kontrolera USER i zrob jeden kontroler
 //todo:note is important update nie dziala dodaj
+//todo:W CSS albo JS, zmiana stylu radiobutton zeby klinkite mialy rounded corner i zielony kolor 
+//todo:ziana cipherscd szary lables jak nei aktywne i uchcek all
+//todo:dopisac pekanumber obok obrazkow
+//todo:zaznaczanie obrazka po wczytaniu edit
+//todo:kolorownaie radioboxow jak zanzaczone
+//todo:szare ciphersCD jak niea,tywnne
+//todo:paginacja chartow
 //todo:
 //todo:
-//todo:
+
+
+
+
 namespace NaproKarta.Controllers
 {
    public class UserController : MyController
@@ -283,6 +293,7 @@ namespace NaproKarta.Controllers
                if (vm.Chart is null) vm.Chart = currentUser.Charts.SingleOrDefault(c => c.ID == currentChartId);
                vm.UpdateObservation();
             }
+            else return MyError("Modelstate isnt valid");
          }
          else if (button == "Delete")//todo:popraw to zeby nie zalezlo od jezyka moze jaki enum albo cos, i if/else a nie same ify
          { //todo: dorob delete observation i reset form w JS, i przenies do kontrolera USER
@@ -299,6 +310,7 @@ namespace NaproKarta.Controllers
 
       public ActionResult DeleteObservation(int id, int chartid)
       {
+
          return MyError("delete observtion here");
       }
 

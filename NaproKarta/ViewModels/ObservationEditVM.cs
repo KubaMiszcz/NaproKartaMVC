@@ -43,6 +43,7 @@ namespace NaproKarta.ViewModels
       public List<Note> NotesVM { get; set; } = new List<Note>();
       public List<String> NoteMarks { get; set; } = new List<string>();
       public List<string> NoteMarksBackgroundColors { get; set; } = new List<string>();
+      //public String DisableIf6x8x10xIsSelected { get; set; } = "";
       public Observation Observation { get; set; } = new Observation();
       public Chart Chart { get; set; }
       public int Row { get; set; }
@@ -91,7 +92,7 @@ namespace NaproKarta.ViewModels
             Note note = Observation.Notes[i];
             NotesVM[i] = note;
             NoteMarks[i] = note.Content.Length < 1 ? " " : note.Content.Trim().Substring(0, 1).ToUpper();
-            NoteMarksBackgroundColors[i] = note.IsImportant ? "background-color: blue; " : "";
+            NoteMarksBackgroundColors[i] = note.IsImportant ? "background-color: red; " : "";
          }
       }
 
@@ -131,41 +132,43 @@ namespace NaproKarta.ViewModels
          observationToUpdate.CommentVisit = Observation.CommentVisit;
          observationToUpdate.CommentMedicalTest = Observation.CommentMedicalTest;
          observationToUpdate.CommentLupucupu = Observation.CommentLupucupu;
-
-         foreach (Note note in NotesVM)//todo: przeorb bo usuwanie notek kilku usuwa tylko jedna, potestuj kombinacje i zrob jako dwie tablice itp notek...
+         
+         NotesVM=NotesVM.OrderBy(x=>x.Content).ToList();
+         Observation.Notes=Observation.Notes?.OrderBy(x => x.Content).ToList();
+         foreach (Note note in NotesVM
+         ) //todo: przeorb bo usuwanie notek kilku usuwa tylko jedna, potestuj kombinacje i zrob jako dwie tablice itp notek...
          {
             int i = NotesVM.IndexOf(note);
-            if ((observationToUpdate.Notes?.ElementAtOrDefault(i)?.Content).IsNullOrEmpty()) //note doesnt exist
+            Note noteToUpdate = observationToUpdate.Notes?.ElementAtOrDefault(i);
+            if ((note.Content?.Trim()).IsNullOrEmpty()) //user wrotes nothing
             {
-               if (!(note.Content?.Trim()).IsNullOrEmpty())
+               if (noteToUpdate.IsNotNull()) //note exist=>to delete
+               {
+                  db.Notes.Remove(noteToUpdate);
+                  db.SaveChanges(); //xx
+               }
+            }
+            else //user wrotes sth
+            {
+               if (noteToUpdate.IsNotNull()) //note exist=> update
+               {
+                  noteToUpdate.Content = note.Content.Trim(); //update note
+                  noteToUpdate.IsImportant = note.IsImportant;
+                  db.Entry(noteToUpdate).State = EntityState.Modified;
+                  db.SaveChanges(); //xx
+                  db.Entry(observationToUpdate).State = EntityState.Modified;
+                  db.SaveChanges(); //xx
+               }
+               else //note doesnt exist=> create and add
                {
                   observationToUpdate.AddNote(note); //if user wrote sth
                   db.Notes.Add(note);
-                  db.SaveChanges();//xx
-               }
-            }
-            else //note exist
-            {
-               Note noteToUpdate = observationToUpdate.Notes[i];
-               if ((note.Content?.Trim()).IsNullOrEmpty()) //and user wrotes nothing => delete note
-               {
-                  observationToUpdate?.Notes?.Remove(noteToUpdate);
-                  db.Notes.Remove(noteToUpdate);
-                  db.SaveChanges();//xx
-               }
-               else
-               {
-                  noteToUpdate.Content = note.Content.Trim(); //update note
-                  db.Entry(noteToUpdate).State = EntityState.Modified;
-                  db.SaveChanges();//xx
-                  db.Entry(observationToUpdate).State = EntityState.Modified;
-                  db.SaveChanges();//xx
-
+                  db.SaveChanges(); //xx
                }
             }
          }
-         //db.SaveChanges();
 
+         //db.SaveChanges();
          db.Entry(observationToUpdate).State = EntityState.Modified;
          db.SaveChanges();
       }
